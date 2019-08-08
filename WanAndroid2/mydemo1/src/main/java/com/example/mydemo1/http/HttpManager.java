@@ -1,5 +1,8 @@
 package com.example.mydemo1.http;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -11,10 +14,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,7 +36,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpManager {
 
+    private static final String TAG = "HttpManager";
     private static HttpManager httpManager;
+    private Context context;
 
     private HttpManager() {
     }
@@ -82,8 +94,10 @@ public class HttpManager {
                 .cache(cache)
                 .addInterceptor(new MyCacheinterceptor())
                 .addNetworkInterceptor(new MyCacheinterceptor())
+                .cookieJar(cookieJar)
                 .build();
     }
+
 
     //post 不可以做缓存
     private class MyCacheinterceptor implements Interceptor {
@@ -116,5 +130,52 @@ public class HttpManager {
 
         }
     }
+
+    /**
+     * 根据Response，判断Token是否失效
+     *
+     * @param response
+     * @return
+     */
+    private boolean isTokenExpired(Response response) {
+        if (response.code() == 301) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 同步请求方式，获取最新的Token
+     *
+     * @return
+     */
+    private String getNewToken() throws IOException {
+        // 通过获取token的接口，同步请求接口
+        String newToken = "";
+        return newToken;
+    }
+
+
+    private static CookieJar cookieJar = new CookieJar() {
+
+        private final Map<String, List<Cookie>> cookieMap = new HashMap<String, List<Cookie>>();
+
+        @Override
+        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+            String host = url.host();
+            List<Cookie> cookieList = cookieMap.get(host);
+            if (cookieList != null) {
+                cookieMap.remove(host);
+            }
+            cookieMap.put(host, cookies);
+        }
+
+        @Override
+        public List<Cookie> loadForRequest(HttpUrl url) {
+            List<Cookie> cookieList = cookieMap.get(url.host());
+            return cookieList != null ? cookieList : new ArrayList<Cookie>();
+        }
+    };
+
 
 }

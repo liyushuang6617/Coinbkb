@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.classic.common.MultipleStatusView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SearchActivity">
+
+    <RelativeLayout
+        android:id="@+id/search_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/search_framgnet"
+            android:layout_width="320dp"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/search_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary">
+
+                <EditText
+                    android:id="@+id/etartname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_marginRight="@dimen/dp_40"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:background="@null"
+                    android:hint="发现更多精彩内容"
+                    android:textColorHint="@color/Grey100" />
+
+            </android.support.v7.widget.Toolbar>
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/search_iv_btn"
+            android:layout_width="65dp"
+            android:layout_height="60dp"
+            android:layout_toRightOf="@id/search_framgnet"
+            android:background="@color/colorPrimary"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_search" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/hot_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_relative"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="@string/hot_search"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/sp_20" />
+
+    <com.example.mydemo1.utils.FlowLayout
+        android:id="@+id/search_flow_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_150"
+        android:layout_below="@id/hot_search" />
+
+    <LinearLayout
+        android:id="@+id/search_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_flow_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/search_tint"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/sp_20" />
+
+        <TextView
+            android:id="@+id/search_null_tint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:text="@string/search_null_tint"
+            android:textColor="@color/Grey400" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/go_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_linear"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/go_search"
+        android:textColor="@color/Grey400" />
+</com.classic.common.MultipleStatusView>

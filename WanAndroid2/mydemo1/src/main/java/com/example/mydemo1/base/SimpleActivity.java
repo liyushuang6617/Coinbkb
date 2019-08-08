@@ -29,7 +29,9 @@ public abstract class SimpleActivity extends AppCompatActivity {
 
         //布局 和  逻辑
         initViewAndData();
+
     }
+
 
     protected abstract void initViewAndData();
 
@@ -45,4 +47,6 @@ public abstract class SimpleActivity extends AppCompatActivity {
         //Eventbus注销
         EventBus.getDefault().unregister(this);
     }
+
+
 }

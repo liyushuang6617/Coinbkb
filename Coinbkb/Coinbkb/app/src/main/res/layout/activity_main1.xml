@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/title_ll"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:visibility="gone"
+        android:background="@color/javabeijing"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_45">
+
+            <ImageView
+                android:id="@+id/left_iv"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/cekuang" />
+
+            <TextView
+                android:id="@+id/titles"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:gravity="center"
+                android:text="--/--"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_16" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_centerInParent="true"
+                android:text="交易"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_16" />
+            <ImageView
+                android:id="@+id/ivkk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size_5"
+                android:src="@mipmap/kk"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/size_15"/>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/gray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:background="@color/sybutton"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/home_button1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/home_iv1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/shouye"/>
+
+            <TextView
+                android:id="@+id/button01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="首页"
+                android:textColor="@color/main_blue"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_button2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/home_iv2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/jiaoyi_no"/>
+            <TextView
+                android:id="@+id/button02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/button_text_no"
+                android:text="交易"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_button3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/home_iv3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ganggan_no"/>
+            <TextView
+                android:id="@+id/button03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textColor="@color/button_text_no"
+                android:text="法币"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_button4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/home_iv4"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/hangqing_no"/>
+
+            <TextView
+                android:id="@+id/button04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/button_text_no"
+                android:text="行情"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_button5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/button_text_no"
+            android:padding="2dp"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/home_iv5"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/wode_no"/>
+
+            <TextView
+                android:id="@+id/button05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="我的"
+                android:textSize="12dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+    <include layout="@layout/left_menu" />
+</RelativeLayout>

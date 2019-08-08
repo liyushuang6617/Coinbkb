@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.classic.common.MultipleStatusView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/custom_multiple_status_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_bg"
+    tools:context=".fragment.mfragment.NavigationFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <q.rorbin.verticaltablayout.VerticalTabLayout
+            android:id="@+id/navigation_vertical_tab_layout"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill"
+            android:background="@color/view_bg"
+            app:indicator_color="@color/tab_selected"
+            app:tab_height="@dimen/dp_50"
+            app:tab_margin="@dimen/dp_16"
+            app:tab_mode="scrollable" />
+
+        <View
+            android:id="@+id/navigation_divier"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/line_divider" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/navigation_recycle_view"
+            android:scrollbarThumbVertical="@color/scrollbar"
+            android:scrollbarSize="@dimen/dp_3"
+            android:scrollbars="vertical"
+            />
+    </LinearLayout>
+</com.classic.common.MultipleStatusView>

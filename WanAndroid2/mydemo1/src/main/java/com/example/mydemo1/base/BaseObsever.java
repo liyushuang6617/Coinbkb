@@ -29,7 +29,7 @@ public abstract class BaseObsever<T> implements Observer<T> {
             int errorCode = apiException.getErrorCode();
             switch (errorCode) {
                 case 1:
-
+                break;
             }
             onFail(apiException.getErrorMsg());
         } else if (e instanceof HttpException) {
@@ -47,7 +47,7 @@ public abstract class BaseObsever<T> implements Observer<T> {
         }
     }
 
-    abstract <T> void onSuccess(T data);
+    public abstract void onSuccess(T data);
 
-    abstract <T> void onFail(T error);
+    public abstract void onFail(String error);
 }

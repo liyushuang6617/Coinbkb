@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/neibubeijing"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@color/neibubeijing" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_50"
+            android:background="@color/neibubeijing">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="25dp"
+                android:onClick="back"
+                android:paddingLeft="@dimen/size_10"
+                android:paddingRight="@dimen/size_10"
+                android:scaleType="centerInside"
+                android:src="@mipmap/arrow_left" />
+            <ImageView
+                android:id="@+id/jilu"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/size_10"
+                android:visibility="gone"
+                android:paddingRight="@dimen/size_10"
+                android:scaleType="centerInside"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/size_10"
+                android:src="@mipmap/fiat1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/fabi_top">
+                <TextView
+                    android:id="@+id/goumai"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="@dimen/size_14"
+                    android:background="@drawable/fabi_top1"
+                    android:text="购买"/>
+                <TextView
+                    android:id="@+id/chushou"
+                    android:layout_width="55dp"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_14"
+                    android:gravity="center"
+                    android:text="出售"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.sengmei.meililian.Utils.HorizontalListView
+        android:id="@+id/hlistview"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/size_1"
+        android:background="@color/neibubeijing"
+        android:layout_height="45dp" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/wu"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:text="暂无数据"/>
+            <com.sengmei.meililian.Utils.MyListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="@dimen/size_5"
+                android:scrollbars="none"
+                android:divider="@color/neibubeijing"
+                android:layout_marginTop="@dimen/size_10" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

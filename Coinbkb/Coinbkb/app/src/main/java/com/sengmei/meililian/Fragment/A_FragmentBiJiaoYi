@@ -1,0 +1,682 @@
+package com.sengmei.meililian.Fragment;
+
+import android.app.Dialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.lidroid.xutils.util.LogUtils;
+import com.sengmei.RetrofitHttps.Beans.ZhuCeBean;
+import com.sengmei.RetrofitHttps.GetDataFromServer;
+import com.sengmei.RetrofitHttps.GetDataFromServerInterface;
+import com.sengmei.kline.R;
+import com.sengmei.meililian.Adapter.ThreeListAdapter;
+import com.sengmei.meililian.Adapter.ThreeListDownAdapter;
+import com.sengmei.meililian.Adapter.ThreeListTopAdapter;
+import com.sengmei.meililian.Bean.DataBean;
+import com.sengmei.meililian.Bean.ThreeListBean;
+import com.sengmei.meililian.Bean.ThreeListDownBean;
+import com.sengmei.meililian.Bean.ThreeListTopBean;
+import com.sengmei.meililian.MyApplication;
+import com.sengmei.meililian.UserBean;
+import com.sengmei.meililian.Utils.HttpUtils;
+import com.sengmei.meililian.Utils.MenuBackTree;
+import com.sengmei.meililian.Utils.MenuLeftFragment;
+import com.sengmei.meililian.Utils.MyListView;
+import com.sengmei.meililian.Utils.StringUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
+public class A_FragmentBiJiaoYi extends Fragment implements View.OnClickListener, MenuBackTree {
+    private View view;
+    private TextView mairu, maichu, denglu, last_price, xianjia, title1,keyong, titlevice1,titlevice, jiaoyie;
+    private EditText jiage, shuliang;
+    private String Jiages, Shuliangs, NamesMai, NamesMaiVice;
+    private int Ids, Idsvice, last_prices = 0;
+    private boolean boo = true;
+    private Dialog bottomDialog;
+
+    private ThreeListTopAdapter topAdapter;
+    private List<ThreeListTopBean> toplist = new ArrayList<>();
+    private ThreeListDownAdapter downAdapter;
+    private List<ThreeListDownBean> downlist = new ArrayList<>();
+    private ListView listview, listview1;
+    private MyListView listv;
+    private ThreeListAdapter adapter;
+    private List<ThreeListBean> buttonlist = new ArrayList<>();
+    private TextView deles, adds;
+    private View vvs;
+
+    MenuLeftFragment menuLeftFragment = new MenuLeftFragment();
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.a_fragmentbijiaoyi, null);
+        denglu = (TextView) view.findViewById(R.id.denglu);
+        denglu.setOnClickListener(this);
+        initView(view);
+        menuLeftFragment.setMenuBackTree(this);
+        try {
+            Socket mSocket = IO.socket("http://47.75.200.255:2220");
+            mSocket.connect();
+            mSocket.emit("login", "10");
+            //mSocket.on("update_online_count", onNewMessage);
+            mSocket.on("transaction", onNewMessage);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+     /*   if (DataBean.Types.equals("ok")){
+        }else {
+          startActivity(new Intent(getActivity(),LoginActivity.class));
+        }*/
+    }
+
+    private void initView(View view) {
+        vvs = (View) view.findViewById(R.id.vvs);
+        vvs.setOnClickListener(this);
+        deles = (TextView) view.findViewById(R.id.deles);
+        adds = (TextView) view.findViewById(R.id.adds);
+        deles.setOnClickListener(this);
+        adds.setOnClickListener(this);
+        view.findViewById(R.id.bt_iv).setOnClickListener(this);
+        view.findViewById(R.id.shendu).setOnClickListener(this);
+        listview = (ListView) view.findViewById(R.id.listview);
+        listview1 = (ListView) view.findViewById(R.id.listview1);
+        listv = (MyListView) view.findViewById(R.id.listv);
+        last_price = (TextView) view.findViewById(R.id.last_price);
+        jiage = (EditText) view.findViewById(R.id.jiage);
+        jiage.setOnClickListener(this);
+        jiage.addTextChangedListener(textWatcher);
+        shuliang = (EditText) view.findViewById(R.id.shuliang);
+        shuliang.setOnClickListener(this);
+        shuliang.addTextChangedListener(textWatcher);
+        jiaoyie = (TextView) view.findViewById(R.id.jiaoyie);
+        keyong = (TextView) view.findViewById(R.id.keyong);
+        title1 = (TextView) view.findViewById(R.id.title1);
+        keyong = (TextView) view.findViewById(R.id.keyong);
+        titlevice1 = (TextView) view.findViewById(R.id.titlevice1);
+        titlevice = (TextView) view.findViewById(R.id.titlevice);
+        xianjia = (TextView) view.findViewById(R.id.xianjia);
+        mairu = (TextView) view.findViewById(R.id.mairu);
+        mairu.setOnClickListener(this);
+        maichu = (TextView) view.findViewById(R.id.maichu);
+        maichu.setOnClickListener(this);
+
+
+    }
+
+    TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            Jiages = jiage.getText().toString().trim();
+            Shuliangs = shuliang.getText().toString().trim();
+            if (Jiages.equals("")) {
+                Jiages = "0";
+            }
+            if (Shuliangs.equals("")) {
+                Shuliangs = "0";
+            }
+            LogUtils.e("Jiages=" + Jiages);
+            double a = Double.parseDouble(Jiages);
+            double b = Double.parseDouble(Shuliangs);
+            double c = a * b;
+            jiaoyie.setText("" + c);
+
+        }
+    };
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.deles:
+                String Str = jiage.getText().toString().trim();
+                if (Str.equals("")) {
+                    Str = "0";
+                }
+                double a = Double.parseDouble(Str);
+                if (a >= 1) {
+                    double n = a - 1;
+                    jiage.setText("" + n);
+                }
+                break;
+            case R.id.adds:
+                String Stra = jiage.getText().toString().trim();
+                if (Stra.equals("")) {
+                    Stra = "0";
+                }
+                double aa = Double.parseDouble(Stra);
+
+                double nn = aa + 1;
+                jiage.setText("" + nn);
+                break;
+            case R.id.bt_iv:
+                showDialog();
+                break;
+            case R.id.shendu:
+                showDialog1();
+                break;
+            case R.id.mairu:
+                boo = true;
+                mairu.setBackgroundResource(R.mipmap.mairu);
+                maichu.setBackgroundResource(R.mipmap.mai1);
+                mairu.setTextColor(getResources().getColor(R.color.green));
+                maichu.setTextColor(getResources().getColor(R.color.color_text_gray));
+                denglu.setBackgroundColor(getResources().getColor(R.color.green));
+                denglu.setText("买入" + NamesMaiVice);
+                title1.setText(NamesMaiVice);
+                titlevice.setText(NamesMai);
+                titlevice1.setText(NamesMai);
+                break;
+            case R.id.maichu:
+                boo = false;
+                maichu.setBackgroundResource(R.mipmap.maichu);
+                mairu.setBackgroundResource(R.mipmap.mai2);
+                mairu.setTextColor(getResources().getColor(R.color.color_text_gray));
+                maichu.setTextColor(getResources().getColor(R.color.color_text_FireBrick));
+                denglu.setBackgroundColor(getResources().getColor(R.color.color_text_FireBrick));
+                denglu.setText("卖出" + NamesMaiVice);
+                title1.setText(NamesMaiVice);
+                titlevice.setText(NamesMaiVice);
+                titlevice1.setText(NamesMaiVice);
+
+                break;
+            case R.id.denglu:
+                //FanYongListShow(UserBean.URLin);
+
+                if (MyApplication.Authori.equals("")) {
+                    String jg = jiage.getText().toString().trim();
+                    String sl = shuliang.getText().toString().trim();
+                    if (sl.equals("")) {
+                        Toast.makeText(getActivity(), "数量不能为空", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (jg.equals("")) {
+                        Toast.makeText(getActivity(), "价格不能为空", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    double cc = Double.valueOf(sl);
+                    double dd = Double.valueOf(jg);
+                    Log.e("AAAA", dd + "boo" + cc);
+                    if (dd > 0 & cc > 0) {
+                        Log.e("AAAA", dd + "boo" + cc);
+                        if (boo == true) {//买入
+                            KinShow();
+                            //FanYongListShow(UserBean.URLin);
+                            Log.e("BBBBBBBsd", "boo22" + boo);
+                        } else {//卖出
+                          //  FanYongListShow(UserBean.URLout);
+                            KoutShow();
+                            Log.e("BBBBBBBsd", "boo11" + boo);
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "数量与价格不能小于0", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void showDialog() {
+        bottomDialog = new Dialog(getActivity(), R.style.BottomDialog);
+        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_button, null);
+        TextView quxiao = (TextView) contentView.findViewById(R.id.quxiao);
+        TextView xian = (TextView) contentView.findViewById(R.id.xian);
+        TextView shi = (TextView) contentView.findViewById(R.id.shi);
+        bottomDialog.setContentView(contentView);
+        ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
+        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
+        contentView.setLayoutParams(layoutParams);
+        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottomDialog.setCanceledOnTouchOutside(true);
+        bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+        bottomDialog.show();
+        shi.setOnClickListener(onClickListener);
+        xian.setOnClickListener(onClickListener);
+        quxiao.setOnClickListener(onClickListener);
+    }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.xian:
+                    bottomDialog.cancel();
+                    xianjia.setText("限价");
+                    vvs.setVisibility(View.GONE);
+                    break;
+                case R.id.shi:
+                    bottomDialog.cancel();
+                    xianjia.setText("市价");
+                    vvs.setVisibility(View.VISIBLE);
+                    jiage.setText("" + last_prices);
+                    break;
+                case R.id.quxiao:
+                    bottomDialog.cancel();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    private void showDialog1() {
+        final Dialog bottomDialog = new Dialog(getActivity(), R.style.BottomDialog);
+        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_button1, null);
+        TextView quxiao = (TextView) contentView.findViewById(R.id.quxiao);
+        bottomDialog.setContentView(contentView);
+        ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
+        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
+        contentView.setLayoutParams(layoutParams);
+        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottomDialog.setCanceledOnTouchOutside(true);
+        bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+        bottomDialog.show();
+        quxiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomDialog.cancel();
+            }
+        });
+    }
+    private void KinShow(){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("price", Jiages);
+        map.put("num", Shuliangs);
+        map.put("legal_id", "" + Ids);
+        map.put("currency_id", "" + Idsvice);
+        GetDataFromServerInterface mFromServerInterface= GetDataFromServer.getInstance(getActivity()).getService();
+        Call<ZhuCeBean> indexdata=mFromServerInterface.getKLin(map);
+        indexdata.enqueue(new Callback<ZhuCeBean>() {
+
+            @Override
+            public void onResponse(Call<ZhuCeBean> call, Response<ZhuCeBean> response) {
+                if (response.body() == null) {
+                    return;
+                }
+                if (response.body().getType().equals("ok")) {
+                    DataBean.Types=response.body().getType();
+                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ZhuCeBean> call, Throwable t) {
+                Log.e("AAAAA","@@11="+t.getMessage().toString() );
+                Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(getActivity(), LoginActivity.class));
+            }
+        });
+    }
+    private void KoutShow(){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("price", Jiages);
+        map.put("num", Shuliangs);
+        map.put("legal_id", "" + Ids);
+        map.put("currency_id", "" + Idsvice);
+        GetDataFromServerInterface mFromServerInterface= GetDataFromServer.getInstance(getActivity()).getService();
+        Call<ZhuCeBean> indexdata=mFromServerInterface.getKLout(map);
+        indexdata.enqueue(new Callback<ZhuCeBean>() {
+
+            @Override
+            public void onResponse(Call<ZhuCeBean> call, Response<ZhuCeBean> response) {
+                if (response.body() == null) {
+                    return;
+                }
+                if (response.body().getType().equals("ok")) {
+                    DataBean.Types=response.body().getType();
+                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ZhuCeBean> call, Throwable t) {
+                Log.e("AAAAA","@@11="+t.getMessage().toString() );
+            }
+        });
+    }
+
+    private void FanYongShow(final String URl) {
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 1) {
+                    String s = msg.obj.toString().trim();
+                    Log.e("FanYongShow", "s11=" + s);
+                    //  Toast.makeText(getActivity(),"s="+s,Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject objectt = new JSONObject(s);
+                        String type = objectt.getString("type");
+                        String message = objectt.getString("message");
+                        LogUtils.e("FanYongListShow=" + message);
+                        Log.e("BBBBBBB111", "data=" + message);
+                        if (type.equals("ok")) {
+                            JsonShow(message);
+                        } else {
+                            StringUtil.ToastShow1(getActivity(), message);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        // 启动线程来执行任务
+        new Thread() {
+            public void run() {
+                // 请求网络
+                HashMap<String, String> map = new HashMap<String, String>();
+               /* map.put("user_string", Phones);
+                map.put("password", Passwords);
+                map.put("type", "1");*/
+                map.put("legal_id", "" + Ids);
+                map.put("currency_id", "" + Idsvice);
+                Log.e("BBBBBBBsd2", "=Ids=" + Ids + "QQ;Idsvice=" + Idsvice + URl);
+                String result = HttpUtils.newpost(map, URl);
+                Message m = new Message();
+                m.what = 1;
+                m.obj = result;
+                // 发送消息到Handler
+                handler.sendMessage(m);
+            }
+        }.start();
+    }
+
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            //主线程调用
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e("@@@@@=", "data=" + args[0]);
+                    TJsonShow(args[0] + "");
+                }
+            });
+        }
+    };
+
+    private void JsonShow(String Str) {
+
+        try {
+            JSONObject objectt = new JSONObject(Str);
+            last_prices = objectt.getInt("last_price");
+
+            last_price.setText("" + last_prices);
+            if (xianjia.getText().equals("市价")) {
+                jiage.setText(last_prices);
+            }
+            String ins = objectt.getString("in");
+            String outs = objectt.getString("out");
+            if (toplist.size() > 0) {
+                toplist.clear();
+            }
+            JSONArray jsonArray = new JSONArray(outs);
+
+            for (int ii = 0; ii < 5 - jsonArray.length(); ii++) {
+                ThreeListTopBean topBean = new ThreeListTopBean();
+                topBean.setNames(5 -ii+"");
+                topBean.setNums1("--");
+                topBean.setNums2("--");
+                toplist.add(topBean);
+            }
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                JSONObject objec0 = jsonArray.getJSONObject(jsonArray.length()-i-1);
+                String price = objec0.getString("price");
+                String number = objec0.getString("number");
+                //   String account_number = objec0.getString("account_number");
+                // aaa.setText(price+number+account_number);
+                ThreeListTopBean topBean = new ThreeListTopBean();
+                topBean.setNames((jsonArray.length()-i) + "");
+                topBean.setNums1(price);
+                topBean.setNums2(number);
+                toplist.add(topBean);
+            }
+
+            topAdapter = new ThreeListTopAdapter(getActivity(), toplist);
+            listview.setAdapter(topAdapter);
+
+            if (downlist.size() > 0) {
+                downlist.clear();
+            }
+
+            JSONArray jsonArrays = new JSONArray(ins);
+            for (int i = 0; i < jsonArrays.length(); i++) {
+
+                JSONObject objec0 = jsonArrays.getJSONObject(i);
+                int price = objec0.getInt("price");
+                int number = objec0.getInt("number");
+                // aaa.setText(price+number+account_number);
+                ThreeListDownBean downBean = new ThreeListDownBean();
+                downBean.setNames((i + 1) + "");
+                downBean.setNums1("" + price);
+                downBean.setNums2("" + number);
+                downlist.add(downBean);
+            }
+            for (int ii = 0; ii < 5 - jsonArrays.length(); ii++) {
+                ThreeListDownBean downBean = new ThreeListDownBean();
+                downBean.setNames(ii + jsonArrays.length() + 1 + "");
+                downBean.setNums1("--");
+                downBean.setNums2("--");
+                downlist.add(downBean);
+            }
+            downAdapter = new ThreeListDownAdapter(getActivity(), downlist);
+            listview1.setAdapter(downAdapter);
+
+            String complete = objectt.getString("complete");
+            if (complete.equals("") | complete.equals(null)) {
+                return;
+            }
+            if (buttonlist.size() > 0) {
+                buttonlist.clear();
+            }
+
+            JSONArray jsonArr = new JSONArray(complete);
+            for (int i = 0; i < jsonArr.length(); i++) {
+
+                JSONObject obje = jsonArr.getJSONObject(i);
+                String price = obje.getString("price");
+                String number = obje.getString("number");
+                String time = obje.getString("time");
+                // aaa.setText(price+number+account_number);
+                ThreeListBean buttonBean = new ThreeListBean();
+                buttonBean.setNames(time);
+                buttonBean.setNums1(price);
+                buttonBean.setNums2(number);
+                buttonlist.add(buttonBean);
+            }
+            adapter = new ThreeListAdapter(getActivity(), buttonlist);
+            listv.setAdapter(adapter);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+//soket返回
+    private void TJsonShow(String Str) {
+
+        try {
+            JSONObject objectt = new JSONObject(Str);
+            Log.e("BBBBBBBsd", "objectt=" + objectt);
+            last_prices = objectt.getInt("last_price");
+            Log.e("BBBBBBBsd", "last_prices=" + last_prices);
+            int legal_id = objectt.getInt("legal_id");
+            Log.e("BBBBBBBsd", "legal_id=" + legal_id);
+            int currency_id = objectt.getInt("currency_id");
+            Log.e("BBBBBBBsd1", legal_id + "=!=" + Ids + ";T;" + Idsvice + "=!=" + currency_id);
+            if (Ids == legal_id & Idsvice == currency_id) {
+
+
+                last_price.setText("" + last_prices);
+                if (xianjia.getText().equals("市价")) {
+                    jiage.setText("" + last_prices);
+                }
+                String ins = objectt.getString("in");
+                String outs = objectt.getString("out");
+                if (toplist.size() > 0) {
+                    toplist.clear();
+                }
+                JSONArray jsonArray = new JSONArray(outs);
+                for (int ii = 0; ii < 5 - jsonArray.length(); ii++) {
+                    ThreeListTopBean topBean = new ThreeListTopBean();
+                    topBean.setNames( 5 -ii+"");
+                    topBean.setNums1("--");
+                    topBean.setNums2("--");
+                    toplist.add(topBean);
+                }
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject objec0 = jsonArray.getJSONObject(jsonArray.length()-i-1);
+                    String price = objec0.getString("price");
+                    String number = objec0.getString("number");
+                    //   String account_number = objec0.getString("account_number");
+                    // aaa.setText(price+number+account_number);
+                    ThreeListTopBean topBean = new ThreeListTopBean();
+                    topBean.setNames((jsonArray.length()-i) + "");
+                    topBean.setNums1(price);
+                    topBean.setNums2(number);
+                    toplist.add(topBean);
+                }
+
+                topAdapter = new ThreeListTopAdapter(getActivity(), toplist);
+                listview.setAdapter(topAdapter);
+
+                if (downlist.size() > 0) {
+                    downlist.clear();
+                }
+
+                JSONArray jsonArrays = new JSONArray(ins);
+                for (int i = 0; i < jsonArrays.length(); i++) {
+
+                    JSONObject objec0 = jsonArrays.getJSONObject(i);
+                    int price = objec0.getInt("price");
+                    int number = objec0.getInt("number");
+                    // aaa.setText(price+number+account_number);
+                    ThreeListDownBean downBean = new ThreeListDownBean();
+                    downBean.setNames((i + 1) + "");
+                    downBean.setNums1("" + price);
+                    downBean.setNums2("" + number);
+                    downlist.add(downBean);
+                }
+                for (int ii = 0; ii < 5 - jsonArrays.length(); ii++) {
+                    ThreeListDownBean downBean = new ThreeListDownBean();
+                    downBean.setNames(ii + jsonArrays.length() + 1 + "");
+                    downBean.setNums1("--");
+                    downBean.setNums2("--");
+                    downlist.add(downBean);
+                }
+                downAdapter = new ThreeListDownAdapter(getActivity(), downlist);
+                listview1.setAdapter(downAdapter);
+
+                String complete = objectt.getString("complete");
+                if (complete.equals("") | complete.equals(null)) {
+                    return;
+                }
+                if (buttonlist.size() > 0) {
+                    buttonlist.clear();
+                }
+
+                JSONArray jsonArr = new JSONArray(complete);
+                for (int i = 0; i < jsonArr.length(); i++) {
+
+                    JSONObject obje = jsonArr.getJSONObject(i);
+                    String price = obje.getString("price");
+                    String number = obje.getString("number");
+                    String time = obje.getString("time");
+                    // aaa.setText(price+number+account_number);
+                    ThreeListBean buttonBean = new ThreeListBean();
+                    buttonBean.setNames(time);
+                    buttonBean.setNums1(price);
+                    buttonBean.setNums2(number);
+                    buttonlist.add(buttonBean);
+                }
+                adapter = new ThreeListAdapter(getActivity(), buttonlist);
+                listv.setAdapter(adapter);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void Ids(int ids, int idsvice) {
+
+        Log.e("BBBBBBBsd1", ids + "data=" + idsvice);
+        Ids = ids;
+        Idsvice = idsvice;
+        /*if (DataBean.Types.equals("ok")) {
+            FanYongShow(UserBean.URL_dels);
+        }*/
+        FanYongShow(UserBean.URL_dels);
+    }
+
+    @Override
+    public void NamesThree(String Names, String Namesvice) {
+        NamesMai = Names;
+        NamesMaiVice = Namesvice;
+        title1.setText(NamesMaiVice);
+        Log.e("AAAAA11", "@@11=" + MyApplication.Authori);
+        if (MyApplication.Authori.equals("")) {
+            if (boo == true) {//买入
+                denglu.setText("买入" + NamesMaiVice);
+                titlevice.setText(NamesMai);
+                titlevice1.setText(NamesMai);
+            } else {//卖出
+                denglu.setText("卖出" + NamesMaiVice);
+                titlevice.setText(Namesvice);
+                titlevice1.setText(Namesvice);
+            }
+        }
+    }
+
+}

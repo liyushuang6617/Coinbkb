@@ -17,6 +17,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -54,7 +60,6 @@ dependencies {
     //SmartRefreshLayout上拉加载下拉刷新
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
-    //没有使用特殊Header，可以不加这行
     //tollbar，侧滑，TabLayout：
     implementation 'com.android.support:design:28.0.0'
     //okhttp
@@ -66,4 +71,24 @@ dependencies {
 
     //支持多种状态的自定义 View,
     implementation 'com.classic.common:multiple-status-view:1.6'
+
+    //万能适配器
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+    implementation 'com.github.baserecycleradapter:library:1.1.0'
+
+    //Dagger2
+    implementation 'com.google.dagger:dagger:2.16'
+
+    //Preference的优点在于布局界面的可控性和高效率以及可存储值的简洁性
+    implementation 'com.android.support:preference-v7:28.0.0'
+    implementation 'com.android.support:preference-v14:28.0.0'
+
+    //android 4.4以上沉浸式状态栏和沉浸式导航栏管理，一句代码轻松实现，以及对bar的其他设置
+    implementation 'com.gyf.barlibrary:barlibrary:2.1.9'
+
+    //OkGo
+//    implementation 'com.lzy.net:okgo:3.0.4'
+//    implementation 'com.lzy.net:okrx2:2.0.2'
+//    implementation 'com.lzy.net:okserver:2.0.5'
+
 }

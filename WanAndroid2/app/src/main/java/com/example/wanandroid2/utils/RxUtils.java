@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RxUtils<T> {
 
-    public <T> ObservableTransformer<T, T> rxScheduleThread() {
+    public static <T> ObservableTransformer<T, T> rxScheduleThread() {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
@@ -24,7 +24,7 @@ public class RxUtils<T> {
     }
 
     //将数据切换成我们想要的数据
-    public <T> ObservableTransformer<BaseResponse<T>, T> changeResult() {
+    public static <T> ObservableTransformer<BaseResponse<T>, T> changeResult() {
         return new ObservableTransformer<BaseResponse<T>, T>() {
             @Override
             public ObservableSource<T> apply(Observable<BaseResponse<T>> upstream) {

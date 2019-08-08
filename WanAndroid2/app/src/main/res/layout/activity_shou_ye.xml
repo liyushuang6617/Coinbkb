@@ -21,6 +21,7 @@
             android:id="@+id/bnav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:labelVisibilityMode="labeled"
             android:layout_alignParentBottom="true"
             app:menu="@menu/bottom_navigation" />
 
@@ -37,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/dp_60"
-            android:layout_marginBottom="@dimen/dp_60"
+            android:layout_marginRight="29dp"
+            android:layout_marginBottom="61dp"
             android:background="@color/white"
             android:src="@drawable/ic_arrow_upward_white_24dp"
             tools:ignore="VectorDrawableCompat" />

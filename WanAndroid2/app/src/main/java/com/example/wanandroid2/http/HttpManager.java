@@ -1,5 +1,7 @@
 package com.example.wanandroid2.http;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.wanandroid2.app.Globle;
@@ -10,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -27,7 +30,11 @@ public class HttpManager {
 
     private static HttpManager httpManager;
 
+    private Context context;
+    private final SharedPreferences sharedPreferences;
+
     private HttpManager() {
+        sharedPreferences = context.getSharedPreferences("status", Context.MODE_PRIVATE);
     }
 
     public static HttpManager getInstance() {
@@ -50,7 +57,12 @@ public class HttpManager {
                 .build();
     }
 
+    public <T> T getApiService(Class<T> tClass) {
+        return getRetrofit().create(tClass);
+    }
+
     private OkHttpClient getOkHttpClicent() {
+
 
         //日志过滤器
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -76,6 +88,7 @@ public class HttpManager {
                 .cache(cache)
                 .addInterceptor(new MyCacheinterceptor())
                 .addNetworkInterceptor(new MyCacheinterceptor())
+                .addNetworkInterceptor(new CookieInterceptor())
                 .build();
     }
 
@@ -108,6 +121,26 @@ public class HttpManager {
                         .build();
             }
 
+        }
+    }
+
+    class CookieInterceptor implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            Response response = chain.proceed(request);
+            List<String> headers = response.headers("Set-Cookie");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < headers.size(); i++) {
+                String cookidGet = headers.get(i);
+                String substring = cookidGet.substring(0, cookidGet.indexOf(";"));
+                stringBuilder.append(substring);
+                if (!(i == headers.size() - 1)) {
+                    stringBuilder.append(";");
+                }
+            }
+            sharedPreferences.edit().putString("cookie", stringBuilder.toString()).apply();
+            return response;
         }
     }
 

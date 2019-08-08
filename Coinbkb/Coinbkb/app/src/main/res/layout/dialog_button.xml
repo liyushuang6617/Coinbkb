@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/neibubeijing"
+    android:padding="@dimen/size_5"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/xian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/javabeijing1"
+        android:clickable="true"
+        android:padding="15dp"
+        android:text="限价"
+        android:textColor="@color/black"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/shi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/javabeijing1"
+        android:layout_marginTop="@dimen/size_1"
+        android:clickable="true"
+        android:padding="15dp"
+        android:text="市价"
+        android:textColor="@color/black"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/quxiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:clickable="true"
+        android:background="@color/javabeijing1"
+        android:padding="15dp"
+        android:layout_marginTop="@dimen/size_5"
+        android:textStyle="bold"
+        android:text="取消"
+        android:textColor="@color/black"
+        android:textSize="15dp"/>
+
+</LinearLayout>

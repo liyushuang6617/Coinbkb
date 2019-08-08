@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/size_5"
+    android:background="@color/javabeijing"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/paizhao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/neibubeijing"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="拍照"
+        android:textColor="@color/bwhite"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/xuanqu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/neibubeijing"
+        android:clickable="true"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/size_1"
+        android:padding="15dp"
+        android:text="图库选取"
+        android:textColor="@color/bwhite"
+        android:textSize="15dp"/>
+
+
+    <TextView
+        android:id="@+id/quxiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/neibubeijing"
+        android:gravity="center"
+        android:clickable="true"
+        android:padding="15dp"
+        android:layout_marginTop="@dimen/size_5"
+        android:textStyle="bold"
+        android:text="取消"
+        android:textColor="@color/bwhite"
+        android:textSize="15dp"/>
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_35"
+    android:background="@color/javabeijing"
+    android:padding="@dimen/size_5">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_45"
+        android:layout_marginLeft="@dimen/size_10"
+        android:textSize="@dimen/size_14" />
+
+    <TextView
+        android:id="@+id/times"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_45"
+        android:layout_marginRight="@dimen/size_10"
+        android:gravity="bottom"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="@dimen/size_12" />
+</RelativeLayout>

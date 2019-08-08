@@ -20,6 +20,7 @@ public class MainActivity extends BaseActivtity {
     @BindView(R.id.maintv)
     TextView maintv;
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;

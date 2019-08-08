@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/neibubeijing"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@color/javabeijing" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="@color/javabeijing"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/size_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="行情"
+                    android:textColor="@color/color_text_black"
+                    android:textSize="@dimen/size_16" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="30dp"
+                android:padding="@dimen/size_10"
+                android:scaleType="centerInside"
+                android:src="@mipmap/search"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_50"
+            android:background="@color/javabeijing" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_40"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/all"
+                    android:layout_width="@dimen/size_80"
+                    android:layout_height="match_parent"
+                    android:background="@color/blue"
+                    android:gravity="center"
+                    android:text="全部"
+                    android:textSize="@dimen/size_14" />
+
+                <TextView
+                    android:id="@+id/zixuan"
+                    android:layout_width="@dimen/size_80"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_bj1"
+                    android:gravity="center"
+                    android:text="自选"
+                    android:textSize="@dimen/size_14" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.sengmei.meililian.Utils.HorizontalListView
+                    android:id="@+id/hlistview"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="@dimen/size_1"
+                    android:background="@color/neibubeijing" />
+                <LinearLayout
+                    android:id="@+id/paibi"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_40"
+                    android:background="@color/javabeijing"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:id="@+id/liangs"
+                        android:layout_width="@dimen/chart_0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/size_12"
+                            android:text="交易量"/>
+                        <ImageView
+                            android:id="@+id/v1"
+                            android:layout_width="@dimen/size_10"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/line1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/prices"
+                        android:layout_width="@dimen/chart_0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/size_12"
+                            android:text="价格"/>
+                        <ImageView
+                            android:id="@+id/v2"
+                            android:layout_width="@dimen/size_10"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/line1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/baifens"
+                        android:layout_width="@dimen/chart_0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/size_12"
+                            android:text="24H"/>
+                        <ImageView
+                            android:id="@+id/v3"
+                            android:layout_width="@dimen/size_10"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/line1"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/size_1">
+
+                    <com.sengmei.meililian.Utils.MyListView
+                        android:id="@+id/listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@color/neibubeijing"
+                        android:dividerHeight="@dimen/size_1"
+                        android:scrollbars="none" />
+
+                    <TextView
+                        android:id="@+id/wu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="250dp"
+                        android:text="暂无数据"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
